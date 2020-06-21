@@ -1,15 +1,18 @@
-<div class="modal-header">
-    <h4 class="modal-title">{{my_modal_title}}</h4>
+<div class="modal-header title">
+    <h4 class="modal-title title">{{my_modal_title}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true" style="color: white;">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p> {{my_modal_content}}</p>
-    <p> {{compareImageObj}}</p>
+    <div class = "row">
+      <div class = "col-sm-3"></div>
+      <div class = "col-sm-3"><img [src]="imageUrl1" *ngIf="imageUrl1" class="compare-image"></div>
+      <div class = "col-sm-3"><img [src]="imageUrl2" *ngIf="imageUrl1" class="compare-image"></div>  
+      <div class = "col-sm-3"></div>
+    </div>
+    <div class="chart-container" style="height: 300px; width: 460px" id="barChart"></div>
   </div>
-  <div id="container"></div>
-  <div class="chart-container" style="height: 500px; width: 390px" id="barChart"></div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-dark close-button" (click)="activeModal.close('Close click')">Close</button>
   </div>

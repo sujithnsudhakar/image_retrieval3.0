@@ -1,0 +1,22 @@
+.header{
+    background: #27346B;
+}
+.title{
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    background: #27346B;
+}
+.close-button{
+    background: #DB5669;
+    color: white;
+}
+.compare-image {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 10px;
+}

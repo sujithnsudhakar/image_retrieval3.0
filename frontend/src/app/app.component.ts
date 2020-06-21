@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import * as HighCharts from 'highcharts';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { ComparemodalComponent } from './comparemodal/comparemodal.component';
+import * as Highcharts from 'highcharts';
 
 @Component({
   selector: 'app-root',
@@ -25,12 +26,80 @@ export class AppComponent implements OnInit{
   addinputValue: string = "";
   description: string = "";
   localUrl: any;
+  explainImageUrl: any;
   selectedImages = [];
   highest: string = "";
   moderate: string = "";
   lowest: string = "";
   jsonExplainObj = [];
   twoCompareImagesJson = [];
+  public options: any = {
+    chart: {
+      type: 'pie',
+      options3d: {
+        enabled: true,
+        alpha: 45
+      }
+    },
+    title: {
+      text: 'Feature Comparison',
+      style:{
+        fontSize: '15px',
+        color:'#27346B'
+      }
+    },
+    /*subtitle: {
+      text: '3D donut in Highcharts'
+    },*/
+    plotOptions: {
+      pie: {
+        innerSize: 100,
+        depth: 45
+      }
+    },
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'top',
+      x: -40,
+      y: 80,
+      floating: true,
+      borderWidth: 1,
+      backgroundColor:
+          Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+      shadow: true
+  },
+    tooltip: {
+      headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+    series: [{
+      name: 'Feature Contribution',
+      data: [
+        {
+          name: 'Color',
+          y: 46,
+          drilldown: 'descriptors'
+        },
+        ['Foreground', 14],
+        ['Background', 22],
+        ['Semantic', 18]
+      ]
+    }],
+    drilldown: {
+      series: [{
+        name: 'Color Descriptors',
+        id: 'descriptors',
+        data: [
+          ['CLD', 55.03],
+          ['Dominant color descriptor', 15.83],
+          ['Descriptor3', 3.59],
+          ['Descriptor4', 7.56],
+          ['Descriptor5', 6.18]
+        ]
+      }]
+    }
+  };
   form: FormGroup;
   constructor(private uploadservice:UploadserviceService,private formBuilder: FormBuilder, private httpClient: HttpClient,private modalService: NgbModal){}
   runscript(){
@@ -169,12 +238,15 @@ export class AppComponent implements OnInit{
     console.log(this.twoCompareImagesJson)
 
   }
-  /*displayChart(item) {
-    this.description= `The selected image matches 90 percentage with color, 5 percent with High level semantic deature and 5 percent with foreground.`
-    console.log(item)
-  }*/
   displayChart(item) {
+    this.explainImageUrl =`http://localhost:3000/static/${item.name}`
+    this.description  = `The selected image matches 90 percentage with color, 5 percent with High level semantic deature and 5 percent with foreground.`
+    console.log(item);
+    Highcharts.chart('pieChart', this.options); 
+  }
+  /*displayChart(item) {
     //this.description= `The selected image matches ${item.color} percentage with color, shape and texture of the query image.`
+    this.explainImageUrl =`http://localhost:3000/static/${item.name}`
     this.description= `The selected image matches 90 percentage with color, 5 percent with High level semantic deature and 5 percent with foreground.`
     console.log(item)
     HighCharts.chart('pieChart', {
@@ -221,7 +293,7 @@ export class AppComponent implements OnInit{
       ]
       }]
     });
-  }
+  }*/
   onCheckboxChange(item, isChecked: boolean) {
     this.twoCompareImagesJson = []
     //const website: FormArray = this.form.get('website') as FormArray;
@@ -240,7 +312,8 @@ export class AppComponent implements OnInit{
   open() {
     //const modalRef = this.modalService.open(MymodalComponent);
     const modalRef = this.modalService.open(ComparemodalComponent);
-    //modalRef.componentInstance.my_modal_title = 'Result Images Comparison';
+    modalRef.componentInstance.name1 = this.twoCompareImagesJson[0].name;
+    modalRef.componentInstance.name2 = this.twoCompareImagesJson[1].name;
     //modalRef.componentInstance.my_modal_content = 'Image '
     //            +this.twoCompareImagesJson[0].name+' & '+this.twoCompareImagesJson[1].name;
     modalRef.componentInstance.compareImageObj = this.twoCompareImagesJson;

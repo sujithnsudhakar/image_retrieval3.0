@@ -42,9 +42,10 @@
   <!-- <div>
     Show Image results based on search
   </div> -->
-  <div class=" row results-count">
-    <div class="col-sm-8"><div class="count-circle"> {{resultsCount || 0}}  </div>matching results.</div>
-    <div ><button class="search-btn" (click)="explainImage();open();">Compare</button></div>
+  <div class="results-count">
+    <div class="count-circle"> {{resultsCount || 0}}  </div>matching results.
+    <div style="padding-left: 530px;" *ngIf="jsonImageObj.length"><button style="width: 75px;
+      font-size: 15px;" class="search-btn" (click)="explainImage();open();">Compare</button></div>
   </div>
   <div class="row-info" *ngIf="jsonImageObj.length">
     Below images are displayed based on color,foreground and high level semantic feature.
@@ -70,17 +71,15 @@
     </div> 
   </div>
   <div class="image-desc box-shadow" *ngIf="jsonImageObj.length">
-    <div class="desc-label">Query Image Comparision </div><br/>
+    <div class="desc-label">Comparision with Uploaded Image</div><br/>
     <div class = "row">
-      <div class = "col-sm-6"><img [src]="localUrl" *ngIf="localUrl" class="image query-image"></div>
-      <div class = "col-sm-6"><img [src]="localUrl" *ngIf="localUrl" class="image query-image"></div>
+      <div class = "col-sm-6"><img [src]="localUrl" *ngIf="localUrl" class="image query-image desc-image"></div>
+      <div class = "col-sm-6"><img [src]="explainImageUrl" *ngIf="explainImageUrl" class="image query-image desc-image"></div>
     </div>
-    <!--<div class="query-image" [style.background-image]="'url('+localUrl+')'"> </div>
-    <div class="query-image" [style.background-image]="'url('+localUrl+')'"> </div> -->
    <div class="description">
       {{description}}
     </div>
-     <div class="chart-container" style="height: 500px; width: 390px" id="pieChart"></div>
+     <div class="chart-container" style="height: 300px; width: 400px" id="pieChart"></div>
      <!--<div class="chart-container" style="height: 500px; width: 390px" #chartContainer></div>-->
     </div>
   </div>
